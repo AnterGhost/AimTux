@@ -4,62 +4,6 @@ bool SkinModelChanger::showWindow = false;
 
 static int page = 0;
 
-static int originalModelCT = 42;
-static int replacementModelCT = 42;
-static char filterOriginalModelsCT[18];
-static char filterReplacementModelsCT[18];
-
-static int originalModelT = 59;
-static int replacementModelT = 59;
-static char filterOriginalModelsT[18];
-static char filterReplacementModelsT[18];
-
-static int modelCT = 1;
-static int modelSkinCT = 1;
-
-static int modelT = 1;
-static int modelSkinT = 1;
-
-bool isKnife(ItemDefinitionIndex index)
-{
-	switch(index)
-	{
-		case ItemDefinitionIndex::WEAPON_KNIFE:
-		case ItemDefinitionIndex::WEAPON_KNIFE_T:
-		case ItemDefinitionIndex::WEAPON_KNIFE_BAYONET:
-		case ItemDefinitionIndex::WEAPON_KNIFE_FLIP:
-		case ItemDefinitionIndex::WEAPON_KNIFE_GUT:
-		case ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT:
-		case ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET:
-		case ItemDefinitionIndex::WEAPON_KNIFE_TACTICAL:
-		case ItemDefinitionIndex::WEAPON_KNIFE_BUTTERFLY:
-		case ItemDefinitionIndex::WEAPON_KNIFE_FALCHION:
-		case ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE:
-		case ItemDefinitionIndex::WEAPON_KNIFE_PUSH:
-			return true;
-		default:
-			return false;
-	}
-}
-
-bool isNotWeapon(ItemDefinitionIndex index)
-{
-	switch(index)
-	{
-		case ItemDefinitionIndex::INVALID:
-		case ItemDefinitionIndex::WEAPON_C4:
-		case ItemDefinitionIndex::WEAPON_FLASHBANG:
-		case ItemDefinitionIndex::WEAPON_HEGRENADE:
-		case ItemDefinitionIndex::WEAPON_INCGRENADE:
-		case ItemDefinitionIndex::WEAPON_MOLOTOV:
-		case ItemDefinitionIndex::WEAPON_SMOKEGRENADE:
-		case ItemDefinitionIndex::WEAPON_DECOY:
-			return true;
-		default:
-			return false;
-	}
-}
-
 void TabButtons()
 {
 	const char* tabs[] = {
@@ -91,10 +35,16 @@ void TabButtons()
 
 void ModelsTab()
 {
+
 	ImGui::Checkbox("Enabled", &Settings::Skinchanger::Models::enabled);
 	ImGui::Separator();
 	ImGui::Columns(2, NULL, true);
 	{
+		static int originalModelCT = 42;
+		static int replacementModelCT = Settings::Skinchanger::skinsCT.find((ItemDefinitionIndex)originalModelCT) != Settings::Skinchanger::skinsCT.end() ? (int)Settings::Skinchanger::skinsCT.at((ItemDefinitionIndex)originalModelCT).itemDefinitionIndex : 42;
+		static char filterOriginalModelsCT[18];
+		static char filterReplacementModelsCT[18];
+
 		ImGui::Text("Counter Terrorist Models");
 		ImGui::BeginChild("CTColumn", ImVec2(0, 0), true);
 		{
@@ -113,7 +63,9 @@ void ModelsTab()
 							continue;
 						const bool item_selected = ((int) model.first == originalModelCT);
 						ImGui::PushID((int)model.first);
-							if (ImGui::Selectable(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())).c_str(), item_selected))
+							std::string formattedName;
+							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 							{
 								originalModelCT = (int)model.first;
 								replacementModelCT = (int)Settings::Skinchanger::skinsCT.at(model.first).itemDefinitionIndex;
@@ -136,7 +88,7 @@ void ModelsTab()
 						switch(originalModelCT)
 						{
 							case (int) ItemDefinitionIndex::WEAPON_KNIFE:
-								if(!isKnife(model.first))
+								if(!Util::Items::isKnife(model.first))
 								continue;
 								break;
 							case (int) ItemDefinitionIndex::GLOVE_CT_SIDE:
@@ -148,7 +100,9 @@ void ModelsTab()
 						}
 						const bool item_selected = ((int) model.first == replacementModelCT);
 						ImGui::PushID((int)model.first);
-							if (ImGui::Selectable(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())).c_str(), item_selected))
+							std::string formattedName;
+							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 								replacementModelCT = (int)model.first;
 						ImGui::PopID();
 					}
@@ -169,6 +123,11 @@ void ModelsTab()
 	}
 	ImGui::NextColumn();
 	{
+		static int originalModelT = 59;
+		static int replacementModelT = Settings::Skinchanger::skinsT.find((ItemDefinitionIndex)originalModelT) != Settings::Skinchanger::skinsT.end() ? (int)Settings::Skinchanger::skinsT.at((ItemDefinitionIndex)originalModelT).itemDefinitionIndex : 59;
+		static char filterOriginalModelsT[18];
+		static char filterReplacementModelsT[18];
+
 		ImGui::Text("Terrorist Models");
 		ImGui::BeginChild("TColumn", ImVec2(0, 0), true);
 		{
@@ -187,7 +146,9 @@ void ModelsTab()
 							continue;
 						const bool item_selected = ((int) model.first == originalModelT);
 						ImGui::PushID((int)model.first);
-							if (ImGui::Selectable(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())).c_str(), item_selected))
+							std::string formattedName;
+							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 							{
 								originalModelT = (int)model.first;
 								replacementModelT = (int)Settings::Skinchanger::skinsT.at(model.first).itemDefinitionIndex;
@@ -210,7 +171,7 @@ void ModelsTab()
 						switch(originalModelT)
 						{
 							case (int) ItemDefinitionIndex::WEAPON_KNIFE_T:
-								if(!isKnife(model.first))
+								if(!Util::Items::isKnife(model.first))
 									continue;
 								break;
 							case (int) ItemDefinitionIndex::GLOVE_T_SIDE:
@@ -222,8 +183,10 @@ void ModelsTab()
 						}
 						const bool item_selected = ((int) model.first == replacementModelT);
 						ImGui::PushID((int)model.first);
-						if (ImGui::Selectable(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())).c_str(), item_selected))
-							replacementModelT = (int)model.first;
+							std::string formattedName;
+							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							if (ImGui::Selectable(formattedName.c_str(), item_selected))
+								replacementModelT = (int)model.first;
 						ImGui::PopID();
 					}
 				ImGui::ListBoxFooter();
@@ -234,7 +197,7 @@ void ModelsTab()
 				if (Settings::Skinchanger::skinsT.find((ItemDefinitionIndex)originalModelT) == Settings::Skinchanger::skinsT.end())
 					Settings::Skinchanger::skinsT[(ItemDefinitionIndex)originalModelT] = AttribItem_t();
 
-				Settings::Skinchanger::skinsT.at((ItemDefinitionIndex)originalModelT).itemDefinitionIndex = (ItemDefinitionIndex) replacementModelT;
+				Settings::Skinchanger::skinsT.at((ItemDefinitionIndex)originalModelT).itemDefinitionIndex = (ItemDefinitionIndex)replacementModelT;
 
 				SkinChanger::forceFullUpdate = true;
 			}
@@ -251,26 +214,37 @@ void SkinsTab()
 	ImGui::Separator();
 	ImGui::Columns(2, NULL, true);
 	{
+		static int modelCT = 1;
+		static int modelSkinCT = 1;
+		static char filterModelsCT[18];
+		static char filterModelSkinsCT[18];
+
 		ImGui::Text("Counter Terrorist Skins");
 		ImGui::BeginChild("CTColumn", ImVec2(0, 0), true);
 		{
 			ImGui::Columns(2, NULL, true);
 			{
 				ImGui::Text("Model");
+				ImGui::PushItemWidth(-1);
+					ImGui::InputText("##filterModelsCT", filterModelsCT, IM_ARRAYSIZE(filterModelsCT));
+				ImGui::PopItemWidth();
 				ImGui::ListBoxHeader("##modelsCT", ImVec2(-1, 300));
 				for (auto model : ItemDefinitionIndexMap)
 				{
-//					if (!Util::Contains(Util::ToLower(std::string(filterOriginalModelsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
-//						continue;
-					if (isNotWeapon(model.first))
+					if (!Util::Contains(Util::ToLower(std::string(filterModelsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						continue;
+					if (Util::Items::isUtility(model.first))
 						continue;
 					const bool item_selected = ((int) model.first == modelCT);
 					ImGui::PushID((int)model.first);
-					if (ImGui::Selectable(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())).c_str(), item_selected))
-					{
-						modelCT = (int)model.first;
-						modelSkinCT = (int)Settings::Skinchanger::skinsCT.at(model.first).fallbackPaintKit;
-					}
+						std::string formattedName;
+						formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+						if (ImGui::Selectable(formattedName.c_str(), item_selected))
+						{
+							modelCT = (int)model.first;
+							if (Settings::Skinchanger::skinsCT.find((ItemDefinitionIndex)modelCT) != Settings::Skinchanger::skinsCT.end())
+								modelSkinCT = Settings::Skinchanger::skinsCT.at(model.first).fallbackPaintKit;
+						}
 					ImGui::PopID();
 				}
 				ImGui::ListBoxFooter();
@@ -278,11 +252,14 @@ void SkinsTab()
 			ImGui::NextColumn();
 			{
 				ImGui::Text("Skins");
+				ImGui::PushItemWidth(-1);
+					ImGui::InputText("##filterModelSkinsCT", filterModelSkinsCT, IM_ARRAYSIZE(filterModelSkinsCT));
+				ImGui::PopItemWidth();
 				ImGui::ListBoxHeader("##modelSkinsCT", ImVec2(-1, 300));
 					for (auto skin : weaponSkins)
 					{
-	//					if (!Util::Contains(Util::ToLower(std::string(filterSkins)), Util::ToLower(std::string(skin.second))))
-	//						continue;
+						if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsCT)), Util::ToLower(std::string(skin.second))))
+							continue;
 						const bool item_selected = (skin.first == modelSkinCT);
 						ImGui::PushID(skin.first);
 							if (ImGui::Selectable(skin.second, item_selected))
@@ -297,7 +274,7 @@ void SkinsTab()
 				if (Settings::Skinchanger::skinsCT.find((ItemDefinitionIndex)modelCT) == Settings::Skinchanger::skinsCT.end())
 					Settings::Skinchanger::skinsCT[(ItemDefinitionIndex)modelCT] = AttribItem_t();
 
-				Settings::Skinchanger::skinsCT.at((ItemDefinitionIndex)modelCT).fallbackPaintKit = modelSkinCT;
+				Settings::Skinchanger::skinsCT.at((ItemDefinitionIndex)modelCT) = { ItemDefinitionIndex::INVALID, modelSkinCT, 0.0005f, -1, -1, -1, ""};
 
 				SkinChanger::forceFullUpdate = true;
 			}
@@ -307,12 +284,70 @@ void SkinsTab()
 	}
 	ImGui::NextColumn();
 	{
+		static int modelT = 1;
+		static int modelSkinT = 1;
+		static char filterModelsT[18];
+		static char filterModelSkinsT[18];
+
 		ImGui::Text("Terrorist Skins");
 		ImGui::BeginChild("TColumn", ImVec2(0, 0), true);
 		{
-			ImGui::Text("Skin");
+			ImGui::Columns(2, NULL, true);
+			{
+				ImGui::Text("Model");
+				ImGui::PushItemWidth(-1);
+				ImGui::InputText("##filterModelsT", filterModelsT, IM_ARRAYSIZE(filterModelsT));
+				ImGui::PopItemWidth();
+				ImGui::ListBoxHeader("##modelsT", ImVec2(-1, 300));
+				for (auto model : ItemDefinitionIndexMap)
+				{
+					if (!Util::Contains(Util::ToLower(std::string(filterModelsT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						continue;
+					if (Util::Items::isUtility(model.first))
+						continue;
+					const bool item_selected = ((int) model.first == modelT);
+					ImGui::PushID((int)model.first);
+						std::string formattedName;
+						formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+						if (ImGui::Selectable(formattedName.c_str(), item_selected))
+						{
+							modelT = (int)model.first;
+							if (Settings::Skinchanger::skinsT.find((ItemDefinitionIndex)modelT) != Settings::Skinchanger::skinsT.end())
+								modelSkinT = Settings::Skinchanger::skinsT.at(model.first).fallbackPaintKit;
+						}
+					ImGui::PopID();
+				}
+				ImGui::ListBoxFooter();
+			}
+			ImGui::NextColumn();
+			{
+				ImGui::Text("Skins");
+				ImGui::PushItemWidth(-1);
+				ImGui::InputText("##filterModelSkinsT", filterModelSkinsT, IM_ARRAYSIZE(filterModelSkinsT));
+				ImGui::PopItemWidth();
+				ImGui::ListBoxHeader("##modelSkinsT", ImVec2(-1, 300));
+				for (auto skin : weaponSkins)
+				{
+					if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsT)), Util::ToLower(std::string(skin.second))))
+						continue;
+					const bool item_selected = (skin.first == modelSkinT);
+					ImGui::PushID(skin.first);
+						if (ImGui::Selectable(skin.second, item_selected))
+							modelSkinT = skin.first;
+					ImGui::PopID();
+				}
+				ImGui::ListBoxFooter();
+			}
+			ImGui::Columns(1);
+			if(ImGui::Button("Apply", ImVec2(-1, 0)))
+			{
+				if (Settings::Skinchanger::skinsT.find((ItemDefinitionIndex)modelT) == Settings::Skinchanger::skinsT.end())
+					Settings::Skinchanger::skinsT[(ItemDefinitionIndex)modelT] = AttribItem_t();
 
+				Settings::Skinchanger::skinsT.at((ItemDefinitionIndex)modelT) = { ItemDefinitionIndex::INVALID, modelSkinT, 0.0005f, -1, -1, -1, ""};
 
+				SkinChanger::forceFullUpdate = true;
+			}
 
 			ImGui::EndChild();
 		}
@@ -324,7 +359,7 @@ void SkinModelChanger::RenderWindow()
 	if(!SkinModelChanger::showWindow)
 		return;
 
-	ImGui::SetNextWindowSize(ImVec2(960, 645), ImGuiSetCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(1000, 645), ImGuiSetCond_FirstUseEver);
 	if (ImGui::Begin("Skin And Model Changer", &SkinModelChanger::showWindow, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_ShowBorders))
 	{
 		TabButtons();

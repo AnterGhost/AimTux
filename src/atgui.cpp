@@ -2115,6 +2115,9 @@ void UI::SetupWindows()
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(960, 645));
 			MainWindow();
+		ImGui::PopStyleVar();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(1000, 645));
 			SkinModelChanger::RenderWindow();
 		ImGui::PopStyleVar();
 

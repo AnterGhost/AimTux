@@ -97,5 +97,63 @@ namespace Util
 		{
 			return Util::MapSearchOrDefault<std::string, ItemDefinitionIndex>(&ItemNames, itemName, ItemDefinitionIndex::INVALID);
 		}
+
+		bool isKnife(ItemDefinitionIndex index)
+		{
+			switch(index)
+			{
+				case ItemDefinitionIndex::WEAPON_KNIFE:
+				case ItemDefinitionIndex::WEAPON_KNIFE_T:
+				case ItemDefinitionIndex::WEAPON_KNIFE_BAYONET:
+				case ItemDefinitionIndex::WEAPON_KNIFE_FLIP:
+				case ItemDefinitionIndex::WEAPON_KNIFE_GUT:
+				case ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT:
+				case ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET:
+				case ItemDefinitionIndex::WEAPON_KNIFE_TACTICAL:
+				case ItemDefinitionIndex::WEAPON_KNIFE_BUTTERFLY:
+				case ItemDefinitionIndex::WEAPON_KNIFE_FALCHION:
+				case ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE:
+				case ItemDefinitionIndex::WEAPON_KNIFE_PUSH:
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		bool isUtility(ItemDefinitionIndex index)
+		{
+			switch(index)
+			{
+				case ItemDefinitionIndex::INVALID:
+				case ItemDefinitionIndex::WEAPON_C4:
+				case ItemDefinitionIndex::WEAPON_FLASHBANG:
+				case ItemDefinitionIndex::WEAPON_HEGRENADE:
+				case ItemDefinitionIndex::WEAPON_INCGRENADE:
+				case ItemDefinitionIndex::WEAPON_MOLOTOV:
+				case ItemDefinitionIndex::WEAPON_SMOKEGRENADE:
+				case ItemDefinitionIndex::WEAPON_DECOY:
+					return true;
+				default:
+					return false;
+			}
+		}
+
+		bool isGlove(ItemDefinitionIndex index)
+		{
+			switch(index)
+			{
+				case ItemDefinitionIndex::GLOVE_STUDDED_BLOODHOUND:
+				case ItemDefinitionIndex::GLOVE_SPECIALIST:
+				case ItemDefinitionIndex::GLOVE_CT_SIDE:
+				case ItemDefinitionIndex::GLOVE_T_SIDE:
+				case ItemDefinitionIndex::GLOVE_MOTORCYCLE:
+				case ItemDefinitionIndex::GLOVE_SLICK:
+				case ItemDefinitionIndex::GLOVE_SPORTY:
+				case ItemDefinitionIndex::GLOVE_LEATHER_WRAP:
+					return true;
+				default:
+					return false;
+			}
+		}
 	}
 }
