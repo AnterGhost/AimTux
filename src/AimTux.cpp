@@ -32,7 +32,6 @@ int __attribute__((constructor)) aimtux_init()
 	Hooker::FindInitKeyValues();
 	Hooker::FindLoadFromBuffer();
 	Hooker::FindGetCSWpnData();
-	Hooker::FindCrosshairWeaponTypeCheck();
 	Hooker::HookSwapWindow();
 	Hooker::HookPollEvent();
 
@@ -123,7 +122,6 @@ void __attribute__((destructor)) aimtux_shutdown()
 	delete eventListener;
 
 	*bSendPacket = true;
-	*CrosshairWeaponTypeCheck = 5;
 
 	cvar->ConsoleColorPrintf(ColorRGBA(255, 150, 150), "AimTux has been unloaded successfully.\n");
 }

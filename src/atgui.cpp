@@ -1391,8 +1391,6 @@ void MiscTab()
 					}
 				}
 				SetTooltip("Teleport to (0, 0) on any map");
-				ImGui::Checkbox("Sniper Crosshair", &Settings::SniperCrosshair::enabled);
-				SetTooltip("Enables the the crosshair with sniper rifles");
 			}
 			ImGui::NextColumn();
 			{
