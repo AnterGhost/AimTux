@@ -403,6 +403,8 @@ void Settings::LoadDefaultsOrSave(std::string path)
 
 	settings["NoScopeBorder"]["enabled"] = Settings::NoScopeBorder::enabled;
 
+	settings["SniperCrosshair"]["enabled"] = Settings::SniperCrosshair::enabled;
+
 	settings["Autoblock"]["enabled"] = Settings::Autoblock::enabled;
 	settings["Autoblock"]["key"] = Settings::Autoblock::key;
 
@@ -826,6 +828,8 @@ void Settings::LoadConfig(std::string path)
 	GetVal(settings["ASUSWalls"]["color"], &Settings::ASUSWalls::color);
 
 	GetVal(settings["NoScopeBorder"]["enabled"], &Settings::NoScopeBorder::enabled);
+
+	GetVal(settings["SniperCrosshair"]["enabled"], &Settings::SniperCrosshair::enabled);
 
 	GetVal(settings["Autoblock"]["enabled"], &Settings::Autoblock::enabled);
 	GetButtonCode(settings["Autoblock"]["key"], &Settings::Autoblock::key);
