@@ -352,6 +352,20 @@ void SkinChanger::FireEventClientSide(IGameEvent* event)
 	event->SetString("weapon", killIcons.find(weapon) != killIcons.end() ? killIcons.at(weapon).c_str() : weapon.c_str());
 }
 
+void SkinChanger::FireGameEvent(IGameEvent* event)
+{
+	if (!Settings::Skinchanger::Models::enabled || ModSupport::current_mod == ModType::CSCO)
+		return;
+
+	if (!engine->IsInGame())
+		return;
+
+	if (!event || strcmp(event->GetName(), "switch_team") != 0)
+		return;
+
+	SkinChanger::forceFullUpdate = true; // Required otherwise gloves dont apply skin on spawn for some reason.
+}
+
 void SkinChanger::SetViewModelSequence(const CRecvProxyData *pDataConst, void *pStruct, void *pOut)
 {
 	if (ModSupport::current_mod == ModType::CSCO)

@@ -123,7 +123,7 @@ void UI::SetupColors()
 	style.Colors[ImGuiCol_PlotLinesHovered] = mainColorHovered;
 	style.Colors[ImGuiCol_PlotHistogram] = Settings::UI::mainColor;
 	style.Colors[ImGuiCol_PlotHistogramHovered] =  mainColorHovered;
-	style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+	style.Colors[ImGuiCol_TextSelectedBg] = mainColorHovered;
 	style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.0f, 0.0f, 0.0f, 0.75f);
 }
 
@@ -388,8 +388,7 @@ void AimbotTab()
 					bool isChanged = Settings::Aimbot::weapons.find(it.first) != Settings::Aimbot::weapons.end();
 					if (!isDefault && isChanged)
 						changeIndicator = '*';
-					formattedName = changeIndicator + (isDefault ? Util::Items::GetItemDisplayName(it.first).c_str() : std::string(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(it.first).c_str()))));
-
+					formattedName = changeIndicator + (isDefault ? Util::Items::GetItemDisplayName(it.first).c_str() : Util::Items::GetItemDisplayName(it.first));
 					if (ImGui::Selectable(formattedName.c_str(), item_selected))
 					{
 						currentWeapon = it.first;
@@ -1555,7 +1554,7 @@ void WeaponSkinChanger()
 //	ImGui::PushItemWidth(-1);
 //		ImGui::InputText("##FilterSkins", filterSkins, IM_ARRAYSIZE(filterSkins));
 //		ImGui::ListBoxHeader("##SKINS", ImVec2(0, 300));
-//			for (auto it : weaponSkins)
+//			for (auto it : itemSkins)
 //			{
 //				if (!Util::Contains(Util::ToLower(std::string(filterSkins)), Util::ToLower(std::string(it.second))))
 //					continue;

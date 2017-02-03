@@ -57,14 +57,14 @@ void ModelsTab()
 				ImGui::ListBoxHeader("##originalModelsCT", ImVec2(-1, 300));
 					for (auto model : ItemDefinitionIndexMap)
 					{
-						if (!Util::Contains(Util::ToLower(std::string(filterOriginalModelsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						if (!Util::Contains(Util::ToLower(std::string(filterOriginalModelsCT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 							continue;
 						if (model.first != ItemDefinitionIndex::WEAPON_KNIFE && model.first != ItemDefinitionIndex::GLOVE_CT_SIDE)
 							continue;
 						const bool item_selected = ((int) model.first == originalModelCT);
 						ImGui::PushID((int)model.first);
 							std::string formattedName;
-							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 							{
 								originalModelCT = (int)model.first;
@@ -83,7 +83,7 @@ void ModelsTab()
 				ImGui::ListBoxHeader("##replacementModelsCT", ImVec2(-1, 300));
 					for (auto model : ItemDefinitionIndexMap)
 					{
-						if (!Util::Contains(Util::ToLower(std::string(filterReplacementModelsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						if (!Util::Contains(Util::ToLower(std::string(filterReplacementModelsCT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 							continue;
 						switch(originalModelCT)
 						{
@@ -101,7 +101,7 @@ void ModelsTab()
 						const bool item_selected = ((int) model.first == replacementModelCT);
 						ImGui::PushID((int)model.first);
 							std::string formattedName;
-							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 								replacementModelCT = (int)model.first;
 						ImGui::PopID();
@@ -140,14 +140,14 @@ void ModelsTab()
 				ImGui::ListBoxHeader("##originalModelsT", ImVec2(-1, 300));
 					for (auto model : ItemDefinitionIndexMap)
 					{
-						if (!Util::Contains(Util::ToLower(std::string(filterOriginalModelsT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						if (!Util::Contains(Util::ToLower(std::string(filterOriginalModelsT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 							continue;
 						if (model.first != ItemDefinitionIndex::WEAPON_KNIFE_T && model.first != ItemDefinitionIndex::GLOVE_T_SIDE)
 							continue;
 						const bool item_selected = ((int) model.first == originalModelT);
 						ImGui::PushID((int)model.first);
 							std::string formattedName;
-							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 							{
 								originalModelT = (int)model.first;
@@ -166,7 +166,7 @@ void ModelsTab()
 				ImGui::ListBoxHeader("##replacementModelsT", ImVec2(-1, 300));
 					for (auto model : ItemDefinitionIndexMap)
 					{
-						if (!Util::Contains(Util::ToLower(std::string(filterReplacementModelsT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+						if (!Util::Contains(Util::ToLower(std::string(filterReplacementModelsT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 							continue;
 						switch(originalModelT)
 						{
@@ -184,7 +184,7 @@ void ModelsTab()
 						const bool item_selected = ((int) model.first == replacementModelT);
 						ImGui::PushID((int)model.first);
 							std::string formattedName;
-							formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+							formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 								replacementModelT = (int)model.first;
 						ImGui::PopID();
@@ -231,14 +231,14 @@ void SkinsTab()
 				ImGui::ListBoxHeader("##modelsCT", ImVec2(-1, 300));
 				for (auto model : ItemDefinitionIndexMap)
 				{
-					if (!Util::Contains(Util::ToLower(std::string(filterModelsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+					if (!Util::Contains(Util::ToLower(std::string(filterModelsCT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 						continue;
 					if (Util::Items::isUtility(model.first))
 						continue;
 					const bool item_selected = ((int) model.first == modelCT);
 					ImGui::PushID((int)model.first);
 						std::string formattedName;
-						formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+						formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 						if (ImGui::Selectable(formattedName.c_str(), item_selected))
 						{
 							modelCT = (int)model.first;
@@ -256,13 +256,18 @@ void SkinsTab()
 					ImGui::InputText("##filterModelSkinsCT", filterModelSkinsCT, IM_ARRAYSIZE(filterModelSkinsCT));
 				ImGui::PopItemWidth();
 				ImGui::ListBoxHeader("##modelSkinsCT", ImVec2(-1, 300));
-					for (auto skin : weaponSkins)
+					for (auto skin : itemSkins)
 					{
-						if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsCT)), Util::ToLower(std::string(skin.second))))
+						if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsCT)), Util::ToLower(Util::WstringToString(localize->FindSafe(skin.second.displayName)))))
 							continue;
 						const bool item_selected = (skin.first == modelSkinCT);
 						ImGui::PushID(skin.first);
-							if (ImGui::Selectable(skin.second, item_selected))
+							std::string formattedName;
+							if(skin.second.paintName != nullptr)
+								formattedName = Util::WstringToString(localize->FindSafe(skin.second.displayName)) + " (" + skin.second.paintName + ")";
+							else
+								formattedName = skin.first == -1 ? skin.second.displayName : Util::WstringToString(localize->FindSafe(skin.second.displayName));
+							if (ImGui::Selectable(formattedName.c_str(), item_selected))
 								modelSkinCT = skin.first;
 						ImGui::PopID();
 					}
@@ -301,14 +306,14 @@ void SkinsTab()
 				ImGui::ListBoxHeader("##modelsT", ImVec2(-1, 300));
 				for (auto model : ItemDefinitionIndexMap)
 				{
-					if (!Util::Contains(Util::ToLower(std::string(filterModelsT)), Util::ToLower(Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())))))
+					if (!Util::Contains(Util::ToLower(std::string(filterModelsT)), Util::ToLower(Util::Items::GetItemDisplayName(model.first))))
 						continue;
 					if (Util::Items::isUtility(model.first))
 						continue;
 					const bool item_selected = ((int) model.first == modelT);
 					ImGui::PushID((int)model.first);
 						std::string formattedName;
-						formattedName = Util::WstringToString(localize->FindSafe(Util::Items::GetItemDisplayName(model.first).c_str())) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
+						formattedName = Util::Items::GetItemDisplayName(model.first) + " (" + Util::Items::GetItemEntityName(model.first) + ")";
 						if (ImGui::Selectable(formattedName.c_str(), item_selected))
 						{
 							modelT = (int)model.first;
@@ -326,13 +331,18 @@ void SkinsTab()
 				ImGui::InputText("##filterModelSkinsT", filterModelSkinsT, IM_ARRAYSIZE(filterModelSkinsT));
 				ImGui::PopItemWidth();
 				ImGui::ListBoxHeader("##modelSkinsT", ImVec2(-1, 300));
-				for (auto skin : weaponSkins)
+				for (auto skin : itemSkins)
 				{
-					if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsT)), Util::ToLower(std::string(skin.second))))
+					if (!Util::Contains(Util::ToLower(std::string(filterModelSkinsT)), Util::ToLower(Util::WstringToString(localize->FindSafe(skin.second.displayName)))))
 						continue;
 					const bool item_selected = (skin.first == modelSkinT);
 					ImGui::PushID(skin.first);
-						if (ImGui::Selectable(skin.second, item_selected))
+						std::string formattedName;
+						if(skin.second.paintName != nullptr)
+							formattedName = Util::WstringToString(localize->FindSafe(skin.second.displayName)) + " (" + skin.second.paintName + ")";
+						else
+							formattedName = skin.first == -1 ? skin.second.displayName : Util::WstringToString(localize->FindSafe(skin.second.displayName));
+						if (ImGui::Selectable(formattedName.c_str(), item_selected))
 							modelSkinT = skin.first;
 					ImGui::PopID();
 				}

@@ -87,10 +87,10 @@ namespace Util
 
 		std::string GetItemDisplayName(ItemDefinitionIndex index)
 		{
-			if (ItemDefinitionIndexMap.find(index) != ItemDefinitionIndexMap.end())
-				return ItemDefinitionIndexMap.at(index).displayName;
+			if (ItemDefinitionIndexMap.find(index) != ItemDefinitionIndexMap.end() && index != ItemDefinitionIndex::INVALID)
+				return Util::WstringToString(localize->FindSafe(ItemDefinitionIndexMap.at(index).displayName));
 			else
-				return "INVALID";
+				return ItemDefinitionIndexMap.at(index).displayName;
 		}
 
 		ItemDefinitionIndex GetItemIndex(const std::string itemName)
