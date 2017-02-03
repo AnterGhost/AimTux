@@ -1,6 +1,7 @@
 #include "skins.h"
 
 std::vector<std::pair<int, const char*>> weaponSkins = {
+		{ -1, "No Skin"},
 		{ 2, "#PaintKit_so_olive_Tag" },
 		{ 3, "#PaintKit_so_red_Tag" },
 		{ 5, "#PaintKit_hy_ddpat_Tag" },
@@ -549,6 +550,30 @@ std::vector<std::pair<int, const char*>> weaponSkins = {
 		{ 636, "#PaintKit_gs_p90_shallow_grave_Tag" },
 		{ 637, "#PaintKit_cu_usp_cyrex_Tag" },
 		{ 638, "#PaintKit_cu_wp_sawedoff_Tag" },
+		{ 10006, "#PaintKit_bloodhound_black_silver_tag" },
+		{ 10007, "#PaintKit_bloodhound_snakeskin_brass_tag" },
+		{ 10008, "#PaintKit_bloodhound_metallic_tag" },
+		{ 10009, "#PaintKit_handwrap_leathery_tag" },
+		{ 10010, "#PaintKit_handwrap_camo_grey_tag" },
+		{ 10013, "#PaintKit_slick_black_tag" },
+		{ 10015, "#PaintKit_slick_military_tag" },
+		{ 10016, "#PaintKit_slick_red_tag" },
+		{ 10018, "#PaintKit_sporty_light_blue_tag" },
+		{ 10019, "#PaintKit_sporty_military_tag" },
+		{ 10021, "#PaintKit_handwrap_red_slaughter_tag" },
+		{ 10024, "#PaintKit_motorcycle_basic_black_tag" },
+		{ 10026, "#PaintKit_motorcycle_mint_triangle_tag" },
+		{ 10027, "#PaintKit_motorcycle_mono_boom_tag" },
+		{ 10028, "#PaintKit_motorcycle_triangle_blue_tag" },
+		{ 10030, "#PaintKit_specialist_ddpat_green_camo_tag" },
+		{ 10033, "#PaintKit_specialist_kimono_diamonds_red_tag" },
+		{ 10034, "#PaintKit_specialist_emerald_web_tag" },
+		{ 10035, "#PaintKit_specialist_white_orange_grey_tag" },
+		{ 10036, "#PaintKit_handwrap_fabric_orange_camo_tag" },
+		{ 10037, "#PaintKit_sporty_purple_tag" },
+		{ 10038, "#PaintKit_sporty_green_tag" },
+		{ 10039, "#PaintKit_bloodhound_guerrilla_tag" },
+		{ 10040, "#PaintKit_slick_snakeskin_yellow_tag" },
 };
 
 std::vector<std::pair<int, const char*>> gloveSkins = {
@@ -635,21 +660,21 @@ void LocalizeWeaponSkins()
 		weaponSkins[index] = { it.first, strdup(localized.c_str()) };
 	}
 
-	std::sort(weaponSkins.begin(), weaponSkins.end(), [](auto &left, auto &right) {
-		std::size_t leftIter = 0, rightIter = 0;
-		std::size_t leftSize = strlen(left.second), rightSize = strlen(right.second);
-
-		while (leftIter != leftSize && rightIter != rightSize)
-		{
-			if (left.second[leftIter] != right.second[rightIter])
-				return left.second[leftIter] < right.second[rightIter];
-
-			++leftIter;
-			++rightIter;
-		}
-
-		return leftSize < rightSize;
-	});
+//	std::sort(weaponSkins.begin(), weaponSkins.end(), [](auto &left, auto &right) {
+//		std::size_t leftIter = 0, rightIter = 0;
+//		std::size_t leftSize = strlen(left.second), rightSize = strlen(right.second);
+//
+//		while (leftIter != leftSize && rightIter != rightSize)
+//		{
+//			if (left.second[leftIter] != right.second[rightIter])
+//				return left.second[leftIter] < right.second[rightIter];
+//
+//			++leftIter;
+//			++rightIter;
+//		}
+//
+//		return leftSize < rightSize;
+//	});
 }
 
 void LocalizeGloveSkins()

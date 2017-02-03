@@ -1,8 +1,11 @@
-//
-// Created by anter on 02/02/17.
-//
+#pragma once
 
-#ifndef AIMTUX_SKINMODELCHANGER_H
-#define AIMTUX_SKINMODELCHANGER_H
+#include "../../atgui.h"
 
-#endif //AIMTUX_SKINMODELCHANGER_H
+
+namespace SkinModelChanger
+{
+	extern bool showWindow;
+
+	extern void RenderWindow();
+}
