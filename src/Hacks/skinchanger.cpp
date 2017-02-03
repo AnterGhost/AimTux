@@ -5,7 +5,7 @@ bool Settings::Skinchanger::Models::enabled = false;
 
 std::unordered_map<ItemDefinitionIndex, AttribItem_t> Settings::Skinchanger::skinsCT = {
 		{ ItemDefinitionIndex::WEAPON_AK47 /*WeaponID*/, { ItemDefinitionIndex::INVALID /*itemDefinitionIndex*/, 524 /*fallbackPaintKit*/, 0.0005f /*fallbackWear*/, -1 /*fallbackSeed*/, 1337/*fallbackStatTrak*/, -1/*fallbackEntityQuality*/, "TestTux"/*customName*/ } },
-		{ ItemDefinitionIndex::WEAPON_KNIFE, { ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, 417, 0.0005f, -1, 1337, -1, "AimTux Best Tux" } },
+		{ ItemDefinitionIndex::WEAPON_KNIFE, { ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, -1, -1, -1, 1337, -1, "AimTux Best Tux" } },
 		{ ItemDefinitionIndex::GLOVE_CT_SIDE, { ItemDefinitionIndex::GLOVE_SPECIALIST, 10006, 0.0005f, -1, -1, -1, "" } },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
@@ -226,7 +226,7 @@ void SkinChanger::FrameStageNotifySkins(ClientFrameStage_t stage)
 				}
 			} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST && Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
 			{
-				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) == Settings::Skinchanger::skinsT.end())
+				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsT.end())
 				{
 					const AttribItem_t &skinT = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
 
@@ -279,7 +279,7 @@ void SkinChanger::FrameStageNotifySkins(ClientFrameStage_t stage)
 				}
 			} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST && !Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
 			{
-				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) == Settings::Skinchanger::skinsT.end())
+				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsT.end())
 				{
 					const AttribItem_t &skinT = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
 
@@ -497,6 +497,6 @@ void SkinChanger::SetViewModelSequence(const CRecvProxyData *pDataConst, void *p
 	// Call original function with the modified data.
 	if (!fnSequenceProxyFn)
 		fnSequenceProxyFn = sequenceHook->GetOriginalFunction();
-	
+
 	fnSequenceProxyFn(pData, pStruct, pOut);
 }
