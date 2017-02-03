@@ -100,7 +100,7 @@ Now, go back into csgo, if you're in the main menu of the game you should see th
 
 Now that AimTux has been injected into the game, press <kbd>Insert</kbd> on your keyboard to open the hack menu (<kbd>FN</kbd>+<kbd>Delete</kbd> if you're using a laptop).
 
-If you want to change skinsCT, create and load configs or open the player list, you can find those buttons at the top of the screen.
+If you want to change skins, create and load configs or open the player list, you can find those buttons at the top of the screen.
 
 ## Unloading the hack
 
@@ -153,7 +153,7 @@ If you wish to contribute code to this opensource project, please keep some thin
 ## Screenshots
 
 ![menu](http://aimtux.net/images/screenshot1.png)
-![skinsCT](http://aimtux.net/images/screenshot2.png)
+![skins](http://aimtux.net/images/screenshot2.png)
 ![esp_chams](http://aimtux.net/images/screenshot3.jpeg)
 
 ## Credits
