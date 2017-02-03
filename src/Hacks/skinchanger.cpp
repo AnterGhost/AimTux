@@ -8,6 +8,7 @@ std::unordered_map<ItemDefinitionIndex, AttribItem_t> Settings::Skinchanger::ski
 		{ ItemDefinitionIndex::WEAPON_KNIFE, { ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, -1, -1, -1, 1337, -1, "AimTux Best Tux" } },
 		{ ItemDefinitionIndex::GLOVE_CT_SIDE, { ItemDefinitionIndex::GLOVE_SPECIALIST, 10006, 0.0005f, -1, -1, -1, "" } },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_FLIP, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_GUT, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
@@ -16,7 +17,6 @@ std::unordered_map<ItemDefinitionIndex, AttribItem_t> Settings::Skinchanger::ski
 		{ ItemDefinitionIndex::WEAPON_KNIFE_PUSH, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_SURVIVAL_BOWIE, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_USP_SILENCER, { ItemDefinitionIndex::INVALID, 2, 0.0005f, -1, -1, -1, ""} },
-
 };
 
 std::unordered_map<ItemDefinitionIndex, AttribItem_t> Settings::Skinchanger::skinsT = {
@@ -30,6 +30,7 @@ std::unordered_map<ItemDefinitionIndex, AttribItem_t> Settings::Skinchanger::ski
 		{ ItemDefinitionIndex::GLOVE_LEATHER_WRAP, { ItemDefinitionIndex::INVALID, 10009, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::GLOVE_SPECIALIST, { ItemDefinitionIndex::INVALID, 10030, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_M9_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
+		{ ItemDefinitionIndex::WEAPON_KNIFE_KARAMBIT, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_BAYONET, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_FLIP, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
 		{ ItemDefinitionIndex::WEAPON_KNIFE_GUT, { ItemDefinitionIndex::INVALID, 417, 0.0005f, -1, -1, -1, ""} },
@@ -74,19 +75,37 @@ void SkinChanger::FrameStageNotifyModels(ClientFrameStage_t stage)
 				if (!weapon)
 					continue;
 
-				auto keyExists = Settings::Skinchanger::skinsCT.find(*weapon->GetItemDefinitionIndex());
-				if (keyExists == Settings::Skinchanger::skinsCT.end())
-					continue;
-
-				const AttribItem_t &currentSkin = Settings::Skinchanger::skinsCT.at(*weapon->GetItemDefinitionIndex());
-
-				if (currentSkin.itemDefinitionIndex != ItemDefinitionIndex::INVALID && ItemDefinitionIndexMap.find(currentSkin.itemDefinitionIndex) != ItemDefinitionIndexMap.end())
+				if (localplayer->GetTeam() == TeamID::TEAM_COUNTER_TERRORIST)
 				{
-					*weapon->GetModelIndex() = modelInfo->GetModelIndex(ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).entityModel);
-					if (ItemDefinitionIndexMap.find(*weapon->GetItemDefinitionIndex()) != ItemDefinitionIndexMap.end())
+					if (Settings::Skinchanger::skinsCT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsCT.end())
 					{
-						killIcons[ItemDefinitionIndexMap.at(*weapon->GetItemDefinitionIndex()).killIcon] = ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).killIcon;
-						*weapon->GetItemDefinitionIndex() = currentSkin.itemDefinitionIndex;
+						const AttribItem_t &currentSkin = Settings::Skinchanger::skinsCT.at(*weapon->GetItemDefinitionIndex());
+
+						if (currentSkin.itemDefinitionIndex != ItemDefinitionIndex::INVALID && ItemDefinitionIndexMap.find(currentSkin.itemDefinitionIndex) != ItemDefinitionIndexMap.end())
+						{
+							*weapon->GetModelIndex() = modelInfo->GetModelIndex(ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).entityModel);
+							if (ItemDefinitionIndexMap.find(*weapon->GetItemDefinitionIndex()) != ItemDefinitionIndexMap.end())
+							{
+								killIcons[ItemDefinitionIndexMap.at(*weapon->GetItemDefinitionIndex()).killIcon] = ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).killIcon;
+								*weapon->GetItemDefinitionIndex() = currentSkin.itemDefinitionIndex;
+							}
+						}
+					}
+				} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST)
+				{
+					if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsT.end())
+					{
+						const AttribItem_t &currentSkin = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
+
+						if (currentSkin.itemDefinitionIndex != ItemDefinitionIndex::INVALID && ItemDefinitionIndexMap.find(currentSkin.itemDefinitionIndex) != ItemDefinitionIndexMap.end())
+						{
+							*weapon->GetModelIndex() = modelInfo->GetModelIndex(ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).entityModel);
+							if (ItemDefinitionIndexMap.find(*weapon->GetItemDefinitionIndex()) != ItemDefinitionIndexMap.end())
+							{
+								killIcons[ItemDefinitionIndexMap.at(*weapon->GetItemDefinitionIndex()).killIcon] = ItemDefinitionIndexMap.at(currentSkin.itemDefinitionIndex).killIcon;
+								*weapon->GetItemDefinitionIndex() = currentSkin.itemDefinitionIndex;
+							}
+						}
 					}
 				}
 			}
@@ -195,112 +214,56 @@ void SkinChanger::FrameStageNotifySkins(ClientFrameStage_t stage)
 			if (!weapon)
 				continue;
 
-			if (localplayer->GetTeam() == TeamID::TEAM_COUNTER_TERRORIST && Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
+			if (localplayer->GetTeam() == TeamID::TEAM_COUNTER_TERRORIST)
 			{
-				if (Settings::Skinchanger::skinsCT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsCT.end())
-				{
-					const AttribItem_t &skinCT = Settings::Skinchanger::skinsCT.at(*weapon->GetItemDefinitionIndex());
+				if (Settings::Skinchanger::skinsCT.find(*weapon->GetItemDefinitionIndex()) == Settings::Skinchanger::skinsCT.end())
+					continue;
 
-					if(Settings::Skinchanger::skinsCT.find(skinCT.itemDefinitionIndex) !=  Settings::Skinchanger::skinsCT.end())
-					{
-						const AttribItem_t &skinCT2 = Settings::Skinchanger::skinsCT.at(skinCT.itemDefinitionIndex);
+				const AttribItem_t &skinCT = Settings::Skinchanger::skinsCT.at(*weapon->GetItemDefinitionIndex());
 
-						if (skinCT2.fallbackPaintKit != -1)
-							*weapon->GetFallbackPaintKit() = skinCT2.fallbackPaintKit;
+				if (skinCT.fallbackPaintKit != -1)
+					*weapon->GetFallbackPaintKit() = skinCT.fallbackPaintKit;
 
-						if (skinCT2.fallbackSeed != -1)
-							*weapon->GetFallbackSeed() = skinCT2.fallbackSeed;
+				if (skinCT.fallbackSeed != -1)
+					*weapon->GetFallbackSeed() = skinCT.fallbackSeed;
 
-						if (skinCT2.fallbackWear != -1)
-							*weapon->GetFallbackWear() = skinCT2.fallbackWear;
+				if (skinCT.fallbackWear != -1)
+					*weapon->GetFallbackWear() = skinCT.fallbackWear;
 
-						if (skinCT2.fallbackStatTrak != -1)
-							*weapon->GetFallbackStatTrak() = skinCT2.fallbackStatTrak;
+				if (skinCT.fallbackStatTrak != -1)
+					*weapon->GetFallbackStatTrak() = skinCT.fallbackStatTrak;
 
-						if (skinCT2.entityQuality != -1)
-							*weapon->GetEntityQuality() = skinCT2.entityQuality;
+				if (skinCT.entityQuality != -1)
+					*weapon->GetEntityQuality() = skinCT.entityQuality;
 
-						if (skinCT2.customName != "")
-							snprintf(weapon->GetCustomName(), 32, "%s", skinCT2.customName.c_str());
-					}
-				}
-			} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST && Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
+				if (skinCT.customName != "")
+					snprintf(weapon->GetCustomName(), 32, "%s", skinCT.customName.c_str());
+
+			} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST)
 			{
-				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsT.end())
-				{
-					const AttribItem_t &skinT = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
 
-					if(Settings::Skinchanger::skinsT.find(skinT.itemDefinitionIndex) !=  Settings::Skinchanger::skinsT.end())
-					{
-						const AttribItem_t &skinT2 = Settings::Skinchanger::skinsT.at(skinT.itemDefinitionIndex);
+				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) == Settings::Skinchanger::skinsT.end())
+					continue;
 
-						if (skinT2.fallbackPaintKit != -1)
-							*weapon->GetFallbackPaintKit() = skinT2.fallbackPaintKit;
+				const AttribItem_t &skinT = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
 
-						if (skinT2.fallbackSeed != -1)
-							*weapon->GetFallbackSeed() = skinT2.fallbackSeed;
+				if (skinT.fallbackPaintKit != -1)
+					*weapon->GetFallbackPaintKit() = skinT.fallbackPaintKit;
 
-						if (skinT2.fallbackWear != -1)
-							*weapon->GetFallbackWear() = skinT2.fallbackWear;
+				if (skinT.fallbackSeed != -1)
+					*weapon->GetFallbackSeed() = skinT.fallbackSeed;
 
-						if (skinT2.fallbackStatTrak != -1)
-							*weapon->GetFallbackStatTrak() = skinT2.fallbackStatTrak;
+				if (skinT.fallbackWear != -1)
+					*weapon->GetFallbackWear() = skinT.fallbackWear;
 
-						if (skinT2.entityQuality != -1)
-							*weapon->GetEntityQuality() = skinT2.entityQuality;
+				if (skinT.fallbackStatTrak != -1)
+					*weapon->GetFallbackStatTrak() = skinT.fallbackStatTrak;
 
-						if (skinT2.customName != "")
-							snprintf(weapon->GetCustomName(), 32, "%s", skinT2.customName.c_str());
-					}
-				}
-			} else if (localplayer->GetTeam() == TeamID::TEAM_COUNTER_TERRORIST && !Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
-			{
-				if (Settings::Skinchanger::skinsCT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsCT.end())
-				{
-					const AttribItem_t &skinCT = Settings::Skinchanger::skinsCT.at(*weapon->GetItemDefinitionIndex());
+				if (skinT.entityQuality != -1)
+					*weapon->GetEntityQuality() = skinT.entityQuality;
 
-					if (skinCT.fallbackPaintKit != -1)
-						*weapon->GetFallbackPaintKit() = skinCT.fallbackPaintKit;
-
-					if (skinCT.fallbackSeed != -1)
-						*weapon->GetFallbackSeed() = skinCT.fallbackSeed;
-
-					if (skinCT.fallbackWear != -1)
-						*weapon->GetFallbackWear() = skinCT.fallbackWear;
-
-					if (skinCT.fallbackStatTrak != -1)
-						*weapon->GetFallbackStatTrak() = skinCT.fallbackStatTrak;
-
-					if (skinCT.entityQuality != -1)
-						*weapon->GetEntityQuality() = skinCT.entityQuality;
-
-					if (skinCT.customName != "")
-						snprintf(weapon->GetCustomName(), 32, "%s", skinCT.customName.c_str());
-				}
-			} else if (localplayer->GetTeam() == TeamID::TEAM_TERRORIST && !Util::Items::isKnife(*weapon->GetItemDefinitionIndex()))
-			{
-				if (Settings::Skinchanger::skinsT.find(*weapon->GetItemDefinitionIndex()) != Settings::Skinchanger::skinsT.end())
-				{
-					const AttribItem_t &skinT = Settings::Skinchanger::skinsT.at(*weapon->GetItemDefinitionIndex());
-
-					if (skinT.fallbackPaintKit != -1)
-						*weapon->GetFallbackPaintKit() = skinT.fallbackPaintKit;
-
-					if (skinT.fallbackSeed != -1)
-						*weapon->GetFallbackSeed() = skinT.fallbackSeed;
-
-					if (skinT.fallbackWear != -1)
-						*weapon->GetFallbackWear() = skinT.fallbackWear;
-
-					if (skinT.fallbackStatTrak != -1)
-						*weapon->GetFallbackStatTrak() = skinT.fallbackStatTrak;
-
-					if (skinT.entityQuality != -1)
-						*weapon->GetEntityQuality() = skinT.entityQuality;
-
-					if (skinT.customName != "")
-						snprintf(weapon->GetCustomName(), 32, "%s", skinT.customName.c_str());
-				}
+				if (skinT.customName != "")
+					snprintf(weapon->GetCustomName(), 32, "%s", skinT.customName.c_str());
 			}
 			*weapon->GetItemIDHigh() = -1;
 			*weapon->GetAccountID() = localplayer_info.xuidlow;
